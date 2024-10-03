@@ -1,0 +1,10 @@
+
+# Ignore all `.pem` files
+*.pem
+
+# Ignore Docker build artifacts
+*.docker
+
+# Ignore IDE/editor-specific files (e.g., VSCode)
+.vscode/
+*.swp
