@@ -23,7 +23,7 @@ RUN curl -O https://archive.apache.org/dist/tomcat/tomcat-10/v$TOMCAT_VERSION/bi
 COPY ca-key.pem /usr/share/tomcat/conf/
 COPY ca-cert.pem /usr/share/tomcat/conf/
 
-# Generate keystore.p12 from CA certificate and private key
+# Generate keystore.p12 from CA certificate and PrKey
 RUN openssl pkcs12 -export -in /usr/share/tomcat/conf/ca-cert.pem -inkey /usr/share/tomcat/conf/ca-key.pem -out /usr/share/tomcat/conf/keystore.p12 -name tomcat -passout pass:XpandIT
 
 # convert PKCS12 para JKS
@@ -41,19 +41,6 @@ RUN sed -i '/<\/Service>/i \
     </SSLHostConfig> \
 </Connector>' \
 $CATALINA_HOME/conf/server.xml
-
-# Configure Tomcat to use SSL
-#RUN echo '<Connector port="4041" protocol="org.apache.coyote.http11.Http11NioProtocol" \
- #            maxThreads="150" SSLEnabled="true" \
-  #           scheme="https" secure="true" \
-   #          clientAuth="false" \
-    #         sslProtocol="TLS" \
-     #        keystoreFile="${catalina.base}/conf/keystore.jks" \
-      #       keystorePass="XpandIT" />' \
-    #>> $CATALINA_HOME/conf/server.xml
-
-# Copiar o arquivo server.xml do host para o container
-#COPY ./server.xml /usr/share/tomcat/conf/server.xml
 
     # Expose port 4041 for SSL
 EXPOSE 4041
